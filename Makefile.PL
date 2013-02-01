@@ -1,15 +1,11 @@
 use strict;
 use warnings;
+use inc::Module::Install;
 
-use ExtUtils::MakeMaker;
+name 'Acme-Replica';
+all_from      'lib/Acme/Replica.pm';
+author        'Kei Shimada <sasakure_kei@cpan.org>',
+test_requires 'Test::More';
+test_requires 'Test::Exception';
 
-WriteMakefile(
-    NAME         => 'Acme::Replica',
-    VERSION_FROM => 'lib/Acme/Replica.pm',
-    AUTHOR       => 'Kei Shimada <sasakure_kei@cpan.org>',
-    PREREQ_PM    => {
-        'Test::More' => 0,
-        'Test::Warn' => 0,
-    },
-    test => {TESTS => 't/*.t'}
-);
+WriteAll;

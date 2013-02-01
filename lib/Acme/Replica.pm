@@ -1,6 +1,6 @@
 package Acme::Replica;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 require Exporter;
 use base qw/Exporter/;
