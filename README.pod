@@ -1,62 +1,3 @@
-package Acme::Replica;
-
-our $VERSION = '0.01';
-
-require Exporter;
-use base qw/Exporter/;
-use Carp;
-
-our @EXPORT = qw/replica_of/;
-
-sub replica_of {
-    my $sample = shift;
-
-    my $r = ref( $sample );
-    return 
-        $r eq 'HASH'   ? Acme::Replica::_mode_hash_ref( $sample )   :
-	$r eq 'ARRAY'  ? Acme::Replica::_mode_array_ref( $sample )  :
-	$r eq 'SCALAR' ? Acme::Replica::_mode_scalar_ref( $sample ) :
-	!$r            ? Acme::Replica::_mode_scalar( $sample )     :
-	croak 'Not a (SCALAR|ARRAY|HASH) reference.'
-	;
-}
-
-sub _mode_hash_ref {
-    my ( $hash_ref,) = @_;
-    my %replica_hash = ();
-    for ( keys %$hash_ref ) {
-	$replica_hash{ Acme::Replica::_add_invisible_character($_) } = $hash_ref->{ $_ };
-    }
-    return %replica_hash;
-}
-
-sub _mode_array_ref {
-    my ( $array_ref,) = @_;
-    my @replica_array = ();
-    for ( @$array_ref ) {
-	push @replica_array, Acme::Replica::_add_invisible_character($_);
-    }
-    return @replica_array;
-}
-
-sub _mode_scalar_ref {
-    my ( $scalar_ref,) = @_;
-    return Acme::Replica::_add_invisible_character( $$scalar_ref );
-}
-
-sub _mode_scalar {
-    my ($scalar,) = @_;
-    return Acme::Replica::_add_invisible_character( $scalar );
-}
-
-sub _add_invisible_character {
-    my ($str,) = @_;
-    return pack('H2', '1c') . $str;
-}
-
-1;
-__END__
-
 =encoding utf8
 
 =head1 NAME
@@ -78,7 +19,7 @@ Acme::Replica
   my @hotdog = qw/bread sausage/;
   my @replica = replica_of( \@hotdog );
   print Dumper \@replica;
-  # $VAR1 = [
+  # $var1 = [
   #    'bread',
   #    'sausage',
   # ];
@@ -91,10 +32,10 @@ Acme::Replica
       );
   my %replica = replica_of( \%buffet_table );
   print Dumper \%replica;
-  # $VAR1 = {
-  #    italian  => 'pasta',
+  # $var1 = {
   #    japanese => 'sukiyaki',
   #    amelican => 'stake',
+  #    italian  => 'pasta',
   #    };
   print $replica{japanese}; # Use of uninitialized value in print at test.pl line ...
 
